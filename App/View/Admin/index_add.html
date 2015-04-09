@@ -1,0 +1,56 @@
+<% include he.html %>
+<div class="container">
+  <ul class="nav nav-tabs">
+    <li role="presentation"><a href="/Admin">全部文章</a></li>
+    <li role="presentation" class="active"><a href="#">添加文章</a></li>
+    <li role="presentation"><a href="/Admin/Login/lgout">[<%=user.username%>]退出</a></li>
+  </ul>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">添加文章</div>
+    </div>
+    <div class="panel-body">
+      <form role="form" method="post" action="/admin/index/add" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-5">
+            <input type="text" name="title" class="form-control" placeholder="文章标题">
+          </div>
+          <div class="col-md-7">
+            <select name="cid" class="form-control">
+              <option>--请选择文章分类--</option>
+              <%cateList.forEach(function(item){%>
+              <option value="<%=item.id%>"><%=item.cate%></option>
+              <%})%>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>文章简介</label>
+          <input type="text" name="description" class="form-control" placeholder="文章简介">
+        </div>
+        <div class="form-group">
+          <label>封面图片</label>
+          <input type="file" name="cover">
+          <p class="help-block">请上传一个博客的图片.</p>
+        </div>
+        <div class="form-group">
+          <label>博客内容</label>
+          <textarea class="form-control" name="content" rows="10"></textarea>
+        </div>
+        <button type="submit" class="btn btn-info btn-block"> 发 布 博 客 </button>
+        <!-- <button type="button" id="addBlog" class="btn btn-info btn-block"> 发 布 博 客 </button> -->
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  $(function(){
+    $('#addBlog').on('click',function(){
+      $.post('/admin/index/add',$('form').serialize()).success(function(data){
+        console.log(data)
+      });
+    });
+  })
+</script>
+<% include fo.html %>
