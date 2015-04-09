@@ -48,20 +48,20 @@ module.exports = Controller("Admin/BaseController", function(){
     addAction:function(){
       var self = this;
       if(self.isPost()){
-        var blogModel = D('Blog');
-        var pData = self.post();
-        var vBImg = self.file('cover');
-        var finalFileName = this.utilUploadImg(pData.name, vBImg.path);
-        //保存数据到数据库
-        pData.cover = finalFileName;
-        pData.create_time = Date.parse(new Date) / 1000;
-        blogModel.add(pData).then(function(insert) {
-          if(insert){
-            return self.redirect('/Admin/index/index');
-          }else{
-            return self.error('博客发表失败');
-          }
-        });
+          var blogModel = D('Blog');
+          var pData = self.post();
+          var vBImg = self.file('cover');
+          var finalFileName = this.utilUploadImg(pData.name, vBImg.path);
+          //保存数据到数据库
+          pData.cover = finalFileName;
+          pData.create_time = Date.parse(new Date) / 1000;
+          blogModel.update(pData).where({id:id}).then(function(insert) {
+            if(insert){
+              return self.redirect('/Admin/index/index');
+            }else{
+              return self.error('博客修改失败');
+            }
+          });
       }else{
         return D('Category').field('id,cate').select().then(function(data){
           self.assign('cateList',data);
@@ -71,7 +71,20 @@ module.exports = Controller("Admin/BaseController", function(){
         })
       }
     },
-
+    editAction:function(){
+      var self = this,id = this.get('id');
+      return D('Blog').where({id: id}).find().then(function(data){
+        return D('Category').field('id,cate').select().then(function (arr) {
+          self.assign('info', data);
+          self.assign('cateList', arr);
+          return self.display();
+        }).catch(function (err) {
+          return self.error('数据库错误');
+        });
+      }).catch(function (err) {
+        return self.error('数据库错误');
+      })
+    },
     //用于404的访问
     _404Action:function(){
       this.status(404);
