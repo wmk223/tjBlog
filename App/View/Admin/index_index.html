@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>文章管理中心</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Loading Bootstrap -->
+  <link href="/resource/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Loading Flat UI -->
+  <link href="/resource/css/flat-ui.min.css" rel="stylesheet">
+
+  <link rel="shortcut icon" href="img/favicon.ico">
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+  <!--[if lt IE 9]>
+  <script src="/resource/js/vendor/html5shiv.js"></script>
+  <script src="/resource/js/vendor/respond.min.js"></script>
+  <![endif]-->
+  <style type="text/css">
+    .checkbox{
+      margin:0;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">全部文章</a></li>
+    <li role="presentation"><a href="">添加文章</a></li>
+    <li role="presentation"><a href="/Admin/Login/lgout">[<%=user.username%>]退出</a></li>
+  </ul>
+
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <a href="" class="btn btn-primary btn-lg">添加文章</a>
+    <a href="" class="btn btn-warning btn-lg">删除文章</a>
+    <div class="panel-heading">我得博客</div>
+    <table class="table table-hover">
+      <tr>
+        <th>序号</th>
+        <th>标题</th>
+        <th>分类</th>
+        <th>浏览量</th>
+        <th>添加时间</th>
+        <th>操作</th>
+      </tr>
+      <%blogList.forEach(function(item){%>
+      <tr>
+        <td><label class="checkbox"><input type="checkbox" name="ids"><%=item.id%></label></td>
+        <td><%=item.title%></td>
+        <td><%=getCategory(item.category)%></td>
+        <td><%=item.views%></td>
+        <td><%=formatDate(false,item.create_time)%></td>
+        <td>[<a href="/admin/edit/<%=item.id%>">编辑</a>] [<a href="/admin/del/<%=item.id%>">删除</a>]</td>
+      </tr>
+      <%})%>
+
+    </table>
+
+  </div>
+</div>
+<script src="/resource/js/vendor/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/resource/js/vendor/video.js"></script>
+<script src="/resource/js/flat-ui.min.js"></script>
+
+</body>
+</html>
