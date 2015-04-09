@@ -12,8 +12,9 @@ module.exports = Controller("Admin/BaseController", function(){
         table: 'category',
         join: 'inner', //join方式，有 left, right, inner 3种方式
         on: ['cid', 'id'] //ON条件
-      }).select().then(function(data){
-        self.assign('blogList',data);
+      }).page(this.get('page')).countSelect().then(function(data){
+        self.assign('pagerData', data); //这里assign的变量必须为pagerData，分页展示使用
+        self.assign('blogList', data.data);
         return self.display();
       }).catch(function(err){
         return self.error('数据库错误');
@@ -48,20 +49,24 @@ module.exports = Controller("Admin/BaseController", function(){
     addAction:function(){
       var self = this;
       if(self.isPost()){
-          var blogModel = D('Blog');
-          var pData = self.post();
-          var vBImg = self.file('cover');
+        var blogModel = D('Blog');
+        var pData = self.post();
+        var vBImg = self.file('cover');
+        if(vBImg.size){
           var finalFileName = this.utilUploadImg(pData.name, vBImg.path);
           //保存数据到数据库
           pData.cover = finalFileName;
           pData.create_time = Date.parse(new Date) / 1000;
-          blogModel.update(pData).where({id:id}).then(function(insert) {
+          blogModel.add(pData).then(function(insert) {
             if(insert){
               return self.redirect('/Admin/index/index');
             }else{
-              return self.error('博客修改失败');
+              return self.redirect('/Admin/index/add');
             }
           });
+        }else{
+          return self.redirect('/Admin/index/add');
+        }
       }else{
         return D('Category').field('id,cate').select().then(function(data){
           self.assign('cateList',data);
