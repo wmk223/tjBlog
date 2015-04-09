@@ -26,7 +26,7 @@ module.exports = Controller(function(){
     },
     lgoutAction:function(){
       var that = this;
-      this.session('user',null).then(function(){
+      that.session('user',null).then(function(){
         that.redirect('/Admin/Login/login')
       });
     }
