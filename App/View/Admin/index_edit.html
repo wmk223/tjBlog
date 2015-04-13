@@ -16,7 +16,7 @@
             <input type="text" name="title" value="<%=info.title%>" class="form-control" placeholder="文章标题">
           </div>
           <div class="col-md-7">
-            <select id="categroy" name="category" class="form-control">
+            <select id="categroy" name="cid" class="form-control">
               <option>--请选择文章分类--</option>
               <%cateList.forEach(function(item){if(item.id==info.cid){%>
               <option value="<%=item.id%>" selected="selected"><%=item.cate%></option>
