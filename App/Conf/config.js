@@ -17,5 +17,5 @@ module.exports = {
     title:'Vace nodejs Blog',
     keyword:'nodejs,blog',
     description:'this is description'
-  }
+  },
 };
